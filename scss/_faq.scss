@@ -1,0 +1,85 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// FAQ
+// ---------------------------------------------------------------------------
+
+.faq-list {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+// Two columns once there's room, using CSS multi-column (not grid) — with
+// grid-auto-flow:column, opening one item stretches its whole *row* height
+// (grid rows are shared across columns), which visually opened the item
+// next to it with no content. Multi-column has no shared row, so each
+// column flows independently and only the clicked item moves.
+@include respond($bp-md) {
+  .faq-list {
+    max-width: none;
+    column-count: 2;
+    column-gap: 1.5rem;
+  }
+}
+
+.faq-item {
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1rem;
+  break-inside: avoid;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.25rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-primary-darker);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary .faq-icon {
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--color-primary-tint);
+  color: var(--color-primary-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s var(--ease-out);
+
+  svg { width: 1rem; height: 1rem; }
+}
+
+.faq-item[open] summary .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-item summary:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: -3px;
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.5rem;
+  color: var(--color-ink-soft);
+}
+
+.faq-answer p:first-child {
+  margin-top: 0;
+}

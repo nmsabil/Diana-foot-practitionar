@@ -1,0 +1,16 @@
+{
+  "name": "diana-mobile-footcare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing site for DianaMobileFootcare, a mobile foot health practitioner service in Wembley Park, London.",
+  "scripts": {
+    "build:css": "sass scss/main.scss:styles.css --style=expanded --source-map",
+    "build:js": "terser scripts/main.js --compress --mangle --comments false -o script.js",
+    "build": "sass scss/main.scss:styles.css --style=compressed --no-source-map && npm run build:js",
+    "watch": "sass scss/main.scss:styles.css --style=expanded --source-map --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0",
+    "terser": "^5.51.2"
+  }
+}

@@ -1,0 +1,83 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// How it works
+// ---------------------------------------------------------------------------
+
+// A faint dot-grid over the solid section--alt background — just this
+// section and a couple of others get a background treatment, so it still
+// reads as a deliberate touch rather than a template applied everywhere.
+#how-it-works {
+  background-image: radial-gradient(var(--color-primary-darker) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: 0 0;
+  position: relative;
+}
+
+#how-it-works::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary-light);
+  opacity: 0.94;
+  z-index: 0;
+}
+
+#how-it-works .container {
+  position: relative;
+  z-index: 1;
+}
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.5rem;
+  counter-reset: step;
+}
+
+@include respond($bp-md) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include respond($bp-lg) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.step {
+  counter-increment: step;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.step h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.4em;
+}
+
+.step p {
+  color: var(--color-ink-soft);
+  font-size: 0.98rem;
+}

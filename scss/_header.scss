@@ -1,0 +1,277 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Sticky header
+// ---------------------------------------------------------------------------
+
+// NOTE: background + backdrop-filter live on ::before, not on .site-header
+// itself. `backdrop-filter`/`filter` on an element creates a new containing
+// block for any `position: fixed` descendants (like .site-nav's mobile
+// panel), which would otherwise trap that panel inside the header's own
+// small box instead of letting it cover the viewport.
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(250, 246, 238, 0.92);
+  backdrop-filter: saturate(140%) blur(10px);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: var(--color-line);
+}
+
+.site-header.is-scrolled::before {
+  background: rgba(250, 246, 238, 0.98);
+  box-shadow: 0 8px 24px -18px rgba(31, 54, 39, 0.4);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--header-h);
+  padding-block: var(--space-2);
+}
+
+// The real logo (a proper footprint-with-heart mark + wordmark, supplied
+// as one flattened image) replaced the old DIY icon-plus-text lockup —
+// sized by height so its own 640:217 aspect ratio is never distorted.
+.brand {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+@include respond($bp-sm) {
+  .brand-logo {
+    height: 53px;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-line);
+  background: var(--color-white);
+  color: var(--color-primary-darker);
+  cursor: pointer;
+
+  svg {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    transition: opacity 0.2s var(--ease-out), transform 0.25s var(--ease-out);
+  }
+}
+
+.nav-toggle .icon-close {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+
+.nav-toggle[aria-expanded="true"] .icon-open {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.6);
+}
+
+.nav-toggle[aria-expanded="true"] .icon-close {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle svg {
+    transition: none;
+  }
+}
+
+@include respond($bp-lg) {
+  .nav-toggle {
+    display: none;
+  }
+}
+
+.site-nav {
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  background: var(--color-bg);
+  padding: 1.5rem var(--gut) 3rem;
+  overflow-y: auto;
+  transform: translateY(-8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out), visibility 0.25s;
+  z-index: 400;
+}
+
+.site-nav.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-top: 1px solid var(--color-line);
+}
+
+.site-nav a {
+  display: block;
+  padding: 1rem 0.25rem;
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible,
+.site-nav a.is-active {
+  color: var(--color-primary-dark);
+}
+
+.nav-cta {
+  margin-top: 1.5rem;
+}
+
+@include respond($bp-lg) {
+  .site-nav {
+    position: static;
+    inset: auto;
+    background: transparent;
+    padding: 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    overflow: visible;
+  }
+
+  .site-nav ul {
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(0.85rem, 1.7vw, 1.75rem);
+    border-top: none;
+  }
+
+  .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 0.05rem;
+    border-bottom: 2px solid transparent;
+    font-size: clamp(0.92rem, 1.1vw, 1rem);
+    white-space: nowrap;
+  }
+
+  .site-nav a:hover,
+  .site-nav a:focus-visible,
+  .site-nav a.is-active {
+    border-bottom-color: var(--color-primary);
+  }
+
+  .nav-cta {
+    display: none;
+  }
+}
+
+.header-cta {
+  display: none;
+  white-space: nowrap;
+  padding-inline: 1.3em;
+  flex: none;
+}
+
+@include respond($bp-md) {
+  .header-cta {
+    display: inline-flex;
+  }
+}
+
+.header-call {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary-darker);
+  background: var(--color-white);
+  text-decoration: none;
+  flex: none;
+  transition: transform 0.25s var(--ease-out), background-color 0.15s ease, color 0.15s ease, box-shadow 0.25s var(--ease-out);
+
+  svg { width: 24px; height: 24px; }
+}
+
+.header-call:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+}
+
+// A subtle, continuous "ringing" shake on the phone icon itself (not the
+// button) so the call option catches the eye without needing a hover, the
+// way a phone icon that's actually ringing would. Confined to the first
+// third of each cycle so there's a real pause between rings rather than a
+// constant wiggle, and skipped entirely under prefers-reduced-motion.
+@media (prefers-reduced-motion: no-preference) {
+  .header-call svg {
+    animation: header-call-ring 3.2s ease-in-out infinite;
+  }
+}
+
+@keyframes header-call-ring {
+  0%, 65%, 100% { transform: rotate(0deg); }
+  68% { transform: rotate(16deg); }
+  71% { transform: rotate(-14deg); }
+  74% { transform: rotate(10deg); }
+  77% { transform: rotate(-8deg); }
+  80% { transform: rotate(4deg); }
+  83% { transform: rotate(0deg); }
+}
+
+// Held back from $bp-lg (where the full nav + WhatsApp button already
+// appear) until $bp-xl, so the header never has to fit nav + two CTAs
+// in the same narrow band — that combination was overflowing at 1024–1279px.
+@include respond($bp-xl) {
+  .header-call {
+    display: inline-flex;
+  }
+}

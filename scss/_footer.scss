@@ -1,0 +1,126 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Footer & floating WhatsApp CTA
+// ---------------------------------------------------------------------------
+
+.site-footer {
+  position: relative;
+  background: var(--color-primary-darker);
+  color: var(--color-white);
+  padding-block: var(--space-10);
+}
+
+// A soft, single-curve top edge instead of a hard rectangular seam between
+// the last section and the footer — echoes the organic shapes used in the
+// hero rather than introducing a new, unrelated motif. The shape is pulled
+// up over the section above via negative margin so the dark fill visually
+// rises into it; the curve's "valley" areas reveal that section's own
+// background, which is why this only looks right directly after a
+// `.section--alt` block (see index.html).
+.footer-curve {
+  display: block;
+  width: 100%;
+  height: clamp(32px, 6vw, 64px);
+  margin-top: calc(-1 * clamp(32px, 6vw, 64px));
+  position: relative;
+}
+
+.footer-curve path {
+  fill: var(--color-primary-darker);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+}
+
+// The logo's own colours (teal + dark navy) have poor contrast against
+// this dark green background, so it's recoloured to a flat white via
+// filter rather than dropped in as-is: brightness(0) collapses it to a
+// solid silhouette, invert(1) flips that to white.
+.footer-brand img {
+  height: 34px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+@include respond($bp-sm) {
+  .footer-brand img {
+    height: 53px;
+  }
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links a {
+  color: var(--color-white);
+  opacity: 0.85;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+// Floating mobile WhatsApp bar — persistent CTA, phone-first affordance
+.mobile-cta-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 450;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--gut) calc(var(--space-2) + env(safe-area-inset-bottom));
+  background: var(--color-white);
+  border-top: 1px solid var(--color-line);
+  box-shadow: 0 -8px 24px -18px rgba(31, 54, 39, 0.4);
+}
+
+.mobile-cta-bar .btn {
+  flex: 1;
+  min-height: 52px;
+  font-size: 0.98rem;
+}
+
+@include respond($bp-lg) {
+  .mobile-cta-bar {
+    display: none;
+  }
+}
+
+body {
+  padding-bottom: 76px;
+}
+
+@include respond($bp-lg) {
+  body {
+    padding-bottom: 0;
+  }
+}

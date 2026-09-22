@@ -1,0 +1,115 @@
+// ---------------------------------------------------------------------------
+// Reviews (Slick carousel)
+// ---------------------------------------------------------------------------
+
+.reviews-track {
+  margin: 0 -0.75rem;
+}
+
+.review-card {
+  margin: 0.5rem 0.75rem 2.75rem;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  height: calc(100% - 2.75rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.review-stars {
+  display: flex;
+  gap: var(--space-1);
+  color: var(--color-primary);
+  margin-bottom: var(--space-4);
+
+  svg { width: 1.15rem; height: 1.15rem; }
+}
+
+.review-quote {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  flex: 1;
+  margin-bottom: var(--space-5);
+}
+
+.review-author {
+  font-weight: 700;
+  color: var(--color-primary-darker);
+}
+
+// Slick dots — recoloured to match palette, kept large enough to tap
+.slick-dots {
+  position: relative;
+  bottom: 0;
+  display: flex !important;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0;
+  margin-top: var(--space-2);
+}
+
+.slick-dots li {
+  width: auto;
+  height: auto;
+  margin: 0;
+  list-style: none;
+}
+
+.slick-dots li::marker {
+  content: none;
+}
+
+// The visible dot is a small 10px mark, but the button itself keeps a
+// 44x44 hit area (via ::after) so it stays easy to tap without looking oversized.
+.slick-dots li button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.slick-dots li button::before {
+  content: none;
+}
+
+.slick-dots li button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-line);
+  transform: translate(-50%, -50%);
+  transition: background-color 0.15s ease, transform 0.25s var(--ease-out);
+}
+
+.slick-dots li.slick-active button::after {
+  background: var(--color-primary);
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.slick-dots li button:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+// No-JS fallback: show reviews in a simple stacked layout
+.no-js .reviews-track {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0;
+}
+
+.no-js .review-card {
+  margin: 0;
+  height: auto;
+}

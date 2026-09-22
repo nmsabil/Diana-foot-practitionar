@@ -1,0 +1,99 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Areas covered — one full-width panel, no map. Areas read as a wrapped row
+// of tags rather than a stiff equal-width grid, so the list breathes and
+// doesn't look like a spreadsheet — with a lighter secondary row for the
+// non-postcode coverage (care homes, hospitals, clinics).
+//
+// Tried a location-bg map image as the section background with the old
+// flat colour as a semi-transparent overlay on top — reverted, the user
+// felt it looked off against the rest of the page. Section background is
+// just the plain `.section--alt` flat colour again; don't re-add the image
+// without being asked.
+// ---------------------------------------------------------------------------
+
+.areas-panel {
+  max-width: 60rem;
+  margin: 0 auto var(--space-8);
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+}
+
+.areas-tags {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.areas-tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-primary-light);
+  border-radius: 999px;
+  padding: var(--space-3) var(--space-5);
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--color-primary-darker);
+}
+
+.areas-tags li svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-primary);
+  flex: none;
+}
+
+.areas-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-8) 0 var(--space-6);
+  color: var(--color-ink-soft);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.areas-divider::before,
+.areas-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-line);
+}
+
+.areas-tags--also li {
+  background: var(--color-white);
+  border-color: var(--color-line);
+  color: var(--color-ink);
+  font-size: 0.92rem;
+  padding: var(--space-2) var(--space-4);
+}
+
+.areas-tags--also svg {
+  color: var(--color-ink-soft);
+}
+
+.areas-postcode-note {
+  max-width: 40rem;
+  margin-inline: auto;
+  text-align: center;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.75rem;
+  font-weight: 600;
+}
+
+.areas-postcode-note a {
+  color: var(--color-primary-darker);
+}

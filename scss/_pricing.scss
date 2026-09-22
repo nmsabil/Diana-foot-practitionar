@@ -1,0 +1,260 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Pricing
+// ---------------------------------------------------------------------------
+
+// A soft wash instead of the flat parchment every plain .section otherwise
+// gets — one of a handful of sections given this treatment, not all of
+// them, so it still reads as a deliberate accent rather than a template.
+#pricing {
+  background: radial-gradient(120% 100% at 50% 0%, var(--color-primary-light) 0%, transparent 55%);
+  // .reveal-left/.reveal-right slide the price card and reassurance panel
+  // in from off their own edge before settling; without clipping, that
+  // pre-settle offset extends past the section's own box and triggers a
+  // real (if small) horizontal scrollbar at some widths.
+  overflow-x: hidden;
+}
+
+.pricing-grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: start;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+@include respond($bp-md) {
+  .pricing-grid {
+    grid-template-columns: 1fr 1fr;
+    max-width: none;
+  }
+}
+
+.pricing-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 100% at 100% 0%, var(--color-primary-tint) 0%, transparent 55%),
+    var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  padding: clamp(2rem, 5vw, 3rem);
+  text-align: center;
+}
+
+// An oversized, barely-there currency mark behind the figure — the same
+// "editorial flourish, not decoration for its own sake" move used for the
+// quotation mark in the About section.
+.pricing-card::before {
+  content: "£";
+  position: absolute;
+  top: -0.35em;
+  right: 0.1em;
+  font-family: var(--serif);
+  font-size: 9rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-primary);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.pricing-badge {
+  display: inline-block;
+  background: var(--color-primary-tint);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.4em 0.9em;
+  border-radius: 999px;
+  margin-bottom: var(--space-5);
+}
+
+.price-figure {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-1);
+  margin-bottom: 0.25em;
+}
+
+.price-figure .currency {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+.price-figure .amount {
+  font-family: var(--serif);
+  font-size: clamp(3.25rem, 8vw, 4.5rem);
+  font-weight: 700;
+  color: var(--color-primary-darker);
+  line-height: 1;
+}
+
+.price-unit {
+  color: var(--color-ink-soft);
+  font-weight: 600;
+  margin-bottom: var(--space-6);
+}
+
+.price-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-8);
+  text-align: left;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.price-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.price-list svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--color-primary);
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.payment-methods {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.payment-methods span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+
+  svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--color-primary-dark);
+  }
+}
+
+// The "why it's simple" panel — fills the space a lone centred card would
+// otherwise leave empty on a wide screen, with content that does real
+// persuasive work rather than decoration for its own sake.
+.pricing-reassurance {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(140% 90% at 0% 100%, var(--color-primary-light) 0%, transparent 60%),
+    var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: clamp(2rem, 5vw, 3rem);
+  height: 100%;
+}
+
+.pricing-reassurance h3 {
+  margin-bottom: var(--space-6);
+}
+
+.reassurance-item {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.reassurance-item + .reassurance-item {
+  margin-top: var(--space-5);
+}
+
+.reassurance-item .icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  flex: none;
+  border-radius: 55% 45% 48% 52% / 48% 52% 48% 52%;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-primary-light);
+
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--color-primary);
+  }
+}
+
+.reassurance-item strong {
+  display: block;
+  font-family: var(--serif);
+  color: var(--color-primary-darker);
+  font-size: 1.05rem;
+  margin-bottom: 0.2em;
+}
+
+.reassurance-item p {
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+}
+
+// A personal word from Diana herself, right at the point someone's
+// deciding whether to book — the same trust job a face-to-face chat
+// would do, since pricing is often where last-minute doubt creeps in.
+.pricing-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-line);
+}
+
+.pricing-note picture {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.pricing-note img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+}
+
+.pricing-note p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--color-primary-darker);
+}
+
+.pricing-note cite {
+  display: block;
+  margin-top: 0.3em;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+}
+
+.pricing-reassurance .price-footnote {
+  color: var(--color-ink-soft);
+  font-size: 0.9rem;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-line);
+}

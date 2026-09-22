@@ -1,0 +1,18 @@
+// ---------------------------------------------------------------------------
+// Design tokens
+// ---------------------------------------------------------------------------
+
+// Breakpoints (mobile-first)
+$bp-sm: 36rem;   // ~576px
+$bp-md: 48rem;   // ~768px
+$bp-lg: 64rem;   // ~1024px
+$bp-xl: 75rem;   // ~1200px
+
+// Layout
+$maxw: 1400px;
+
+@mixin respond($bp) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}

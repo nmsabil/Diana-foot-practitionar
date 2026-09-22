@@ -1,0 +1,120 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// About / Story
+// ---------------------------------------------------------------------------
+
+#about {
+  overflow-x: hidden;
+}
+
+.about-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: start;
+}
+
+@include respond($bp-lg) {
+  .about-grid {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
+}
+
+// Sticky only makes sense once the grid is actually two columns (photo
+// stays in view while the longer text column scrolls beside it). On
+// mobile, where the layout is a single stacked column, sticky kept the
+// photo pinned near the top of the viewport while the text scrolled up
+// underneath it — a real overlap bug, not just a cosmetic one.
+@include respond($bp-lg) {
+  .about-media {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+}
+
+// Three photos (portrait + two nursing-years snapshots), all with the same
+// shape and radius so they read as one deliberate collage, not a hierarchy.
+// Sized to fit fully within the media column's available height (main on
+// top, the two smaller ones sharing the row below) rather than a tall
+// single-column stack, which pushed well past the height of the text
+// column next to it and forced scrolling to see all three.
+.about-photos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.about-photo {
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  aspect-ratio: 4 / 4;
+}
+
+.about-photo--main {
+  grid-column: 1 / -1;
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-photo--main img {
+  object-position: 50% 12%;
+}
+
+.about-photo-caption {
+  margin-top: var(--space-4);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+.about-copy h3 {
+  margin-top: 1.4em;
+}
+
+.about-quote {
+  position: relative;
+  margin: 1.75em 0;
+  padding: 1.4em 1.75em 1.4em 3.25em;
+  background: var(--color-card);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--color-primary-darker);
+}
+
+.about-quote p {
+  font-style: italic;
+  margin-bottom: 0.5em;
+}
+
+.about-quote cite {
+  display: block;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-soft);
+}
+
+// An oversized, low-opacity quotation mark — a small editorial flourish
+// rather than a generic bordered blockquote.
+.about-quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.15em;
+  left: 0.2em;
+  font-family: var(--serif);
+  font-style: normal;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--color-primary);
+  opacity: 0.35;
+}
+

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.dianamobilefootcare.co.uk/sitemap.xml

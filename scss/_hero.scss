@@ -1,0 +1,205 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Hero — single column of text, with the treatment photo living as a
+// background image rather than a separate boxed photo, so there's no
+// awkward crop/shape to get wrong and no "stock feet close-up in a frame"
+// feeling. On mobile it's full-bleed behind the whole section with a strong
+// light overlay for legibility (text sits directly on top of it there); at
+// $bp-lg+ it narrows to a fading band on the right instead, since the text
+// column has its own space and doesn't need to sit on the photo at all.
+// ---------------------------------------------------------------------------
+
+.hero {
+  position: relative;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 60%;
+  background: radial-gradient(60% 60% at 30% 20%, var(--color-primary-light) 0%, transparent 70%);
+  z-index: -1;
+}
+
+// A dedicated full-height layer for the photo, sized in real pixels/percent
+// against .hero's own box (top:0/bottom:0) rather than a background-size
+// percentage on .hero itself. The earlier version sized the image from its
+// own width (`background-size: 55% auto`), which fixed its height to
+// whatever that width's aspect ratio produced, shorter than the hero's
+// actual (content-driven, variable) height, leaving visible gaps above and
+// below it. This stretches to the section's real height every time.
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(180deg, rgba(250, 246, 238, 0.93) 0%, rgba(250, 246, 238, 0.5) 45%, rgba(250, 246, 238, 0.94) 100%),
+    url("images/hero-foot-treatment.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+@include respond($bp-lg) {
+  .hero::after {
+    left: auto;
+    width: 56%;
+    background-image:
+      linear-gradient(90deg, var(--color-bg) 0%, rgba(250, 246, 238, 0.75) 20%, rgba(250, 246, 238, 0) 42%),
+      url("images/hero-foot-treatment.webp");
+    background-position: center, left center;
+    background-size: 100% 100%, cover;
+  }
+}
+
+.hero-copy {
+  max-width: 55rem;
+  padding-top: var(--space-2);
+}
+
+// Hero content pops in from the left, one element at a time (via AOS,
+// see scripts/main.js and _animations.scss), rather than sliding up like
+// the rest of the page — a deliberate one-off for the hero specifically,
+// since it's the first thing anyone sees. Unlike .pop-side-left/-right
+// elsewhere (gated to $bp-lg+, since those sections stack to full-width
+// columns below that and a side-slide risks overflow), this applies at
+// every width because `.hero` already has its own `overflow: hidden`,
+// which safely clips the fully-off-screen pre-reveal offset regardless of
+// viewport size — verified down to 320px.
+[data-aos="pop-hero-left"] {
+  transform: translateX(-100vw);
+}
+
+[data-aos="pop-hero-left"].aos-animate {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos="pop-hero-left"] {
+    transform: none;
+  }
+}
+
+// See the equivalent rule in _animations.scss — if JS is disabled entirely,
+// nothing ever adds .aos-animate, so this is what stops the hero staying
+// translated fully off-screen forever.
+.no-js [data-aos="pop-hero-left"] {
+  transform: none;
+}
+
+// The hero headline is the single strongest selling point on the page, so
+// it gets its own treatment rather than just being "h1, but bigger": a
+// larger size than any other heading uses, tighter tracking, and a second
+// clause picked out in the accent colour so the emotional payoff ("in the
+// comfort of your home") reads distinctly from the credibility clause in
+// front of it, instead of the whole line landing as one tone.
+.hero-copy h1 {
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.45em;
+}
+
+// Each clause is its own line and its own reveal target (see .hero-line
+// below), rather than the two clauses sharing one <h1>-level animation —
+// that's what lets them pop in from the left one after another instead of
+// moving as a single block.
+.hero-line {
+  display: block;
+}
+
+.hero-line--accent {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.hero-copy .lede {
+  font-size: 1.2rem;
+  max-width: 80%;
+}
+
+.hero-actions {
+  margin-top: 1.75rem;
+}
+
+// The WhatsApp and Call buttons have different label lengths. Letting them
+// sit side-by-side at any width they'd fit squeezed both into narrow
+// columns around 600–768px, wrapping the label onto three lines inside a
+// pill shape that no longer looked like a button. A firm min-width means
+// flex-wrap moves a button to its own full-width row instead of shrinking
+// it below a size its text can sit comfortably in.
+.hero-actions .btn {
+  width: 100%;
+}
+
+@include respond($bp-sm) {
+  .hero-actions .btn {
+    width: auto;
+    flex: 1 1 260px;
+    min-width: 310px;
+  }
+}
+
+// The trust badges that used to float as one combined pill on the corner
+// of the (now removed) photo — moved into the copy itself as two separate,
+// plain-spoken selling points rather than one pill carrying both claims.
+.hero-trust-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.hero-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-5) var(--space-2) var(--space-2);
+  background: var(--color-primary-tint);
+  border: 1.5px solid var(--color-primary-light);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  font-size: 0.98rem;
+  color: var(--color-primary-darker);
+
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--color-white);
+    flex: none;
+  }
+
+  .hero-trust-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+
+  strong {
+    color: var(--color-primary-darker);
+  }
+}
+
+.hero-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  font-size: 0.95rem;
+  color: var(--color-ink-soft);
+
+  svg {
+    width: 1.2em;
+    height: 1.2em;
+    flex: none;
+    color: var(--color-primary);
+  }
+}

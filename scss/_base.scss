@@ -1,0 +1,262 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Root tokens, reset, base typography
+// ---------------------------------------------------------------------------
+
+:root {
+  // Palette — calm sage/forest green, parchment background, warm neutrals.
+  // Deliberately avoids clinical white/blue.
+  --color-primary: #3f6b4d;
+  --color-primary-dark: #2c4d38;
+  --color-primary-darker: #1f3627;
+  --color-primary-light: #e6ede3;   // muted light green for section backgrounds
+  --color-primary-tint: #f1f5ee;
+
+  --color-bg: #faf6ee;              // soft parchment page background
+  --color-card: #f4ecdd;            // warm neutral card background
+  --color-card-alt: #ffffff;
+
+  --color-ink: #23281f;             // near-black, warm-toned
+  --color-ink-soft: #4a5245;
+  --color-line: rgba(35, 40, 31, 0.12);
+
+  --color-white: #ffffff;
+  --color-whatsapp: #2c4d38;        // kept in-palette rather than WhatsApp's own green
+
+  --serif: 'Fraunces', 'Iowan Old Style', 'Georgia', serif;
+  --sans: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --maxw: #{$maxw};
+  --gut: clamp(1.25rem, 4.5vw, 3.25rem);
+
+  // Spacing scale — every margin/padding/gap in the component files below
+  // is one of these, not a one-off value. Named by its multiple of 4px so
+  // the number in the token tells you the pixel value directly.
+  --space-1: 0.25rem;   // 4px
+  --space-2: 0.5rem;    // 8px
+  --space-3: 0.75rem;   // 12px
+  --space-4: 1rem;      // 16px
+  --space-5: 1.25rem;   // 20px
+  --space-6: 1.5rem;    // 24px
+  --space-8: 2rem;      // 32px
+  --space-10: 2.5rem;   // 40px
+  --space-12: 3rem;     // 48px
+  --space-16: 4rem;     // 64px
+  --space-20: 5rem;     // 80px
+  --space-24: 6rem;     // 96px
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+
+  --shadow-soft: 0 12px 32px -16px rgba(31, 54, 39, 0.28);
+  --shadow-lift: 0 20px 44px -18px rgba(31, 54, 39, 0.32);
+
+  // A considered "decelerate hard, settle gently" curve, used everywhere
+  // instead of the browser's generic `ease` — reveals, hovers, toggles.
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --header-h: 76px;
+
+  color-scheme: light;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem; // ~17px baseline, comfortably above the 16px minimum
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+// A faint paper grain over the whole page — the parchment palette is meant
+// to feel like warm stationery, not a flat SaaS gradient. Fixed + very low
+// opacity so it never competes with content or hurts text contrast.
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+picture {
+  display: block;
+  height: 100%;
+}
+
+a {
+  color: var(--color-primary-dark);
+}
+
+// Type scale — each level gets its own size, weight and tracking rather
+// than just scaling one style down, so the hierarchy reads as designed:
+// hero > section headline > subhead > body > caption.
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  color: var(--color-primary-darker);
+  line-height: 1.18;
+  margin: 0 0 0.6em;
+}
+
+h1 {
+  font-size: clamp(2.3rem, 5.4vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  font-weight: 600;
+}
+
+// The shared caption scale — figure captions, footnotes — so "small
+// print" is one consistent size across the page, not several
+// near-identical ones.
+.price-footnote,
+figcaption {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+p {
+  margin: 0 0 1.1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul, ol {
+  padding-left: 1.3em;
+}
+
+.container {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+}
+
+.section {
+  padding-block: clamp(3.25rem, 7vw, 5.5rem);
+}
+
+.section--alt {
+  background: var(--color-primary-light);
+}
+
+.section-head {
+  max-width: 46rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.section-head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+  border: 1px solid var(--color-line);
+  padding: 0.35em 0.9em;
+  border-radius: 999px;
+  margin-bottom: 1em;
+}
+
+.section--alt .eyebrow {
+  background: var(--color-white);
+  width: max-content;
+}
+
+.eyebrow-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+}
+
+.lede {
+  font-size: 1.15rem;
+  color: var(--color-ink-soft);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -60px;
+  background: var(--color-primary-darker);
+  color: var(--color-white);
+  padding: 0.75em 1.25em;
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  transition: top 0.2s ease;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary-dark);
+  outline-offset: 3px;
+}

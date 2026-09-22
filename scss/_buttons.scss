@@ -1,0 +1,98 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Buttons — large, obviously tappable, never smaller than 48px tall
+// ---------------------------------------------------------------------------
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: normal;
+  text-align: center;
+  padding: 0.95em 1.6em;
+  min-height: 56px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), background-color 0.15s ease, color 0.15s ease;
+
+  svg {
+    width: 1.3em;
+    height: 1.3em;
+    flex: none;
+  }
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-lift);
+  color: var(--color-white);
+}
+
+.btn-secondary {
+  background: var(--color-white);
+  color: var(--color-primary-darker);
+  border-color: var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary-tint);
+  color: var(--color-primary-darker);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+// Smaller by default (mobile), full size from $bp-sm up — these were the
+// same large size at every width, which felt oversized stacked full-width
+// on a small phone screen.
+.btn-lg {
+  font-size: 1.02rem;
+  padding: 0.85em 1.5em;
+  min-height: 52px;
+}
+
+@include respond($bp-sm) {
+  .btn-lg {
+    font-size: 1.2rem;
+    padding: 1.1em 2em;
+    min-height: 64px;
+  }
+}
+
+.btn-group {
+  display: block;
+}
+
+// display:block (instead of flex) means the old `gap` no longer creates
+// any space — margin-bottom on every button but the last replaces it,
+// safely for both the always-stacked case (.btn-block, full width) and
+// the side-by-side case (margin-bottom is simply inert there).
+.btn-group .btn {
+  margin-bottom: var(--space-4);
+}
+
+.btn-group .btn:last-child {
+  margin-bottom: 0;
+}

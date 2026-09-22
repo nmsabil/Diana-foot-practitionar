@@ -1,0 +1,151 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Contact / Book
+// ---------------------------------------------------------------------------
+
+// Tried a real at-home foot-care photo as this section's background with
+// the flat colour laid over it as a tint (same approach as Areas' reverted
+// map background) — reverted, the user didn't like it. Plain
+// `.section--alt` flat colour, don't re-add the image without being asked.
+
+// pop-side-left/pop-side-right (AOS, see _animations.scss) slide the
+// contact card and map in from off their own edge before settling;
+// without clipping, that pre-settle offset extends past the section's
+// own box and triggers a real horizontal scrollbar at some widths.
+#contact {
+  overflow-x: hidden;
+}
+
+.contact-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3rem);
+}
+
+@include respond($bp-lg) {
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+    // stretch (not start) — the map fills the same height as the contact
+    // card beside it instead of sitting at its own fixed aspect ratio.
+    align-items: stretch;
+  }
+
+  .contact-grid > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #contact .map-frame {
+    aspect-ratio: auto;
+    flex: 1;
+    min-height: 320px;
+  }
+}
+
+.contact-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.contact-card .btn-group {
+  margin: var(--space-6) 0;
+  flex-direction: column;
+}
+
+.contact-detail-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-6) 0 0;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.contact-detail-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.contact-detail-list svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-primary);
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.contact-detail-list strong {
+  display: block;
+  color: var(--color-ink);
+}
+
+.contact-detail-list a {
+  color: var(--color-primary-darker);
+  font-weight: 700;
+}
+
+.contact-hours {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+  font-size: 0.95rem;
+}
+
+.contact-hours dt {
+  font-weight: 700;
+}
+
+.contact-hours dd {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+// Map — only used here now (Areas Covered dropped its map in favour of a
+// simple tag list), so these live in this file rather than a shared one.
+.map-frame {
+  position: relative;
+  background: var(--color-line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--color-line);
+}
+
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+// An illustrative coverage-area ring drawn over the live map. It's centred
+// on the pin the embed already drops on Wembley Park, not a surveyed
+// boundary — the caption under the map says so — but it gives visitors an
+// at-a-glance sense of "roughly this far" without needing the Google Maps
+// JS API (which custom-drawn, geographically exact overlays would require).
+.map-boundary {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map-boundary ellipse {
+  fill: var(--color-primary);
+  fill-opacity: 0.08;
+  stroke: var(--color-primary-darker);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.map-boundary-note {
+  margin-top: var(--space-3);
+  font-size: 0.88rem;
+  color: var(--color-ink-soft);
+  text-align: center;
+}

@@ -1,0 +1,84 @@
+@use 'variables' as *;
+// ---------------------------------------------------------------------------
+// Scroll-reveal — orchestrated by AOS (Animate On Scroll, self-hosted in
+// vendor/aos/), but using entirely custom animation values rather than
+// AOS's own built-in fade/zoom set.
+//
+// Deliberately transform-only, never opacity. An opacity:0 starting state
+// means content is fully invisible until AOS's observer fires from genuine,
+// real-time scrolling — which never happens for a full-page screenshot, a
+// print/PDF export, or any tool that renders the page at full height without
+// actually scrolling it. That produced large blank-looking sections when the
+// page was captured that way, back when this was hand-rolled. AOS's own
+// built-in animations (fade-up, fade-left, etc.) are opacity-based, which is
+// exactly why we don't use them — these custom [data-aos="..."] rules are
+// the only thing defining what "hidden" and "revealed" look like; AOS itself
+// only decides *when* to add the `aos-animate` class.
+//
+// Four names, chosen by context:
+//   pop-up          single-column content and repeating cards — slides up.
+//   pop-side-left   the LEFT half of a two-column section (About, Pricing,
+//   pop-side-right  Contact) — bottom-up on mobile (still one stacked
+//                   column there), slides in from fully off the left/right
+//                   edge once the layout is genuinely two columns ($bp-lg+).
+//   pop-hero-left   hero content specifically — always slides in from fully
+//                   off the left edge, at every breakpoint (see _hero.scss).
+//
+// The off-screen distance for the side/hero variants is a full 100vw, i.e.
+// actually outside the viewport rather than a small nudge — safe at any
+// magnitude because the sections that use them (#about, #pricing, #contact,
+// .hero) all have their own overflow-x/overflow: hidden clipping the
+// pre-reveal offset, confirmed empirically via a full-width overflow sweep
+// (translateX WILL trigger a real horizontal scrollbar if nothing clips it).
+//
+// Easing/duration/delay are AOS init options (see scripts/main.js), not set
+// here — these rules only supply the transform values for each state.
+// ---------------------------------------------------------------------------
+
+[data-aos="pop-up"] {
+  transform: translateY(80px);
+}
+
+[data-aos="pop-side-left"] {
+  transform: translateY(80px);
+}
+
+[data-aos="pop-side-right"] {
+  transform: translateY(80px);
+}
+
+@include respond($bp-lg) {
+  [data-aos="pop-side-left"] {
+    transform: translateX(-100vw);
+  }
+
+  [data-aos="pop-side-right"] {
+    transform: translateX(100vw);
+  }
+}
+
+[data-aos="pop-up"].aos-animate,
+[data-aos="pop-side-left"].aos-animate,
+[data-aos="pop-side-right"].aos-animate {
+  transform: none;
+}
+
+// AOS's `disable` option (see scripts/main.js) stops it calling init/observe
+// under prefers-reduced-motion, but the elements still carry their `[data-
+// aos]` pre-reveal transform from the rules above unless we clear it here.
+@media (prefers-reduced-motion: reduce) {
+  [data-aos="pop-up"],
+  [data-aos="pop-side-left"],
+  [data-aos="pop-side-right"] {
+    transform: none;
+  }
+}
+
+// If JavaScript is disabled entirely, neither AOS nor our own fallback in
+// main.js (which only catches "the CDN script failed to load") ever runs —
+// `html` keeps the `no-js` class from the inline script in <head> that
+// would otherwise swap it to `js`. Without this, [data-aos] content would
+// stay at its pre-reveal offset forever with nothing left to reveal it.
+.no-js [data-aos] {
+  transform: none;
+}
