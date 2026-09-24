@@ -103,81 +103,10 @@
   font-size: 0.97rem;
 }
 
-// A credential moment bridging the service list and "who this helps": a
-// real, sizeable photo (not a tiny avatar) plus the achievement it backs
-// up. One plain card in the site's own established language (white,
-// soft border, soft shadow, radius-lg — same recipe as .service-card and
-// .who-card), not a separate tinted "frame" nested around a second white
-// card — that double-card treatment (tried briefly, copied from a generic
-// reference mockup) read as a bad copy-paste rather than something that
-// belonged on this site.
-.training-badge {
-  margin: 0 auto var(--space-10);
-  display: flex;
-  flex-direction: column;
-  background: var(--color-white);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
-}
-
-.training-badge-photo {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-}
-
-.training-badge-photo picture {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.training-badge-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.training-badge-text {
-  padding: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.training-badge-label {
-  display: block;
-  font-family: var(--serif);
-  font-size: 1.3rem;
-  color: var(--color-primary-darker);
-  margin-bottom: 0.35em;
-}
-
-.training-badge-text p {
-  color: var(--color-ink-soft);
-  font-size: 0.98rem;
-}
-
-@include respond($bp-md) {
-  .training-badge {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  .training-badge-photo {
-    flex: none;
-    min-width: 400px;
-    width: 400px;
-    aspect-ratio: auto;
-  }
-
-  .training-badge-text {
-    flex: 1;
-    padding: var(--space-8);
-  }
-}
+// The .training-badge credential card that used to live here, and later a
+// small "MCFHP MAFHP Qualified" chip tried in this panel, were both
+// removed after user feedback — see project memory before reintroducing
+// a certificate photo anywhere on this page, it's been rejected twice.
 
 // "Who this helps" gets its own clearly separate panel — not a narrow
 // column squeezed beside the service list — so it reads as its own point,
